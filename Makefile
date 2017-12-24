@@ -4,7 +4,8 @@ NAME = ft_ls
 SRC = main.c \
 		run.c \
 		parse.c \
-		ls.c
+		ls.c \
+		to_list.c
 
 SRCDIR = ./src
 OBJDIR = ./obj

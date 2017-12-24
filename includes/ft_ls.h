@@ -15,6 +15,13 @@
 
 #include <stdio.h>
 
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <pwd.h>
+#include <grp.h>
+#include <time.h>
+
 # define NO 0
 # define RC 1
 # define LO 2
@@ -22,14 +29,25 @@
 # define RV 8
 # define TM 16
 
+
 typedef struct	s_ls
 {
-	int	options;
+	int				options;
+
+	char			*file;
+	mode_t			mode;
+	nlink_t			nlink;
+	uid_t			uid;
+	gid_t			gid;
+	off_t			size;
+	int				time;
 }				t_ls;
 
 int		run(int ac, char **av);
 t_ls	parse(int ac, char **av, int *pos);
 int		ft_ls(t_ls ls, char *dir);
 int		print_stat(char	*file);
+t_list	*to_list(char *dir);
+
 
 #endif

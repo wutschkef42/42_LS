@@ -49,8 +49,19 @@ int	print_stat(char	*file)
 	return (0);
 }
 
+int	print_basic(char *file)
+{
+	ft_printf("%s ", file);
+	return (0);
+}
+
 int	ft_ls(t_ls ls, char *dir)
 {
+	to_list(dir);
+	return (0);
+
+
+	/*
 	DIR				*dirp;
 	struct dirent	*dp;
 
@@ -63,8 +74,10 @@ int	ft_ls(t_ls ls, char *dir)
 	{
 		if ((dp = readdir(dirp)))
 		{
-			//ft_printf("%s\n", dp->d_name);
-			print_stat(dp->d_name);
+			if (ls.options & AL)
+				print_stat(dp->d_name);
+			else
+				print_basic(dp->d_name);
 		}
 			
 			
@@ -74,6 +87,8 @@ int	ft_ls(t_ls ls, char *dir)
 	else
 		(void)closedir(dirp);
 	return (0);
+	*/
+
 }
 
 
