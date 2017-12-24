@@ -27,6 +27,9 @@ typedef struct	s_ls
 	int	options;
 }				t_ls;
 
-t_ls	parse(int ac, char **av);
+int		run(int ac, char **av);
+t_ls	parse(int ac, char **av, int *pos);
+int		ft_ls(t_ls ls, char *dir);
+int		print_stat(char	*file);
 
 #endif

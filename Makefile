@@ -2,7 +2,9 @@
 NAME = ft_ls
 
 SRC = main.c \
-		parse.c
+		run.c \
+		parse.c \
+		ls.c
 
 SRCDIR = ./src
 OBJDIR = ./obj
@@ -36,7 +38,7 @@ clean:
 	make -C $(FTDIR) clean
 
 fclean: clean
-	rm $(NAME)
+	rm -f $(NAME)
 	make -C $(FTDIR) fclean
 
 re: fclean all

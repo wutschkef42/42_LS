@@ -29,7 +29,7 @@ static int	is_option(char c)
 static int	print_usage(char c)
 {
 	ft_printf("ft_ls: illegal option -- %c\n", c);
-	printf("usage: ./ft_ls [-Raltr] [file...]\n");
+	ft_printf("usage: ./ft_ls [-Raltr] [file...]\n");
 	return (0);
 }
 
@@ -59,19 +59,15 @@ static int	parse_flag(t_ls *ls, char *av)
 	return (1);
 }
 
-t_ls		parse(int ac, char **av)
+t_ls		parse(int ac, char **av, int *pos)
 {
 	t_ls	ls;
-	int		i;
 
 	ls = init_ls();
-	i = 0;
-	while (++i < ac)
-	{
-		if (av[i][0] == '-' && ft_strlen(av[i]) > 1)
-			parse_flag(&ls, av[i]);
-		else
-			printf("parse filename: %s\n", av[i]);
-	}
+	*pos = 0;
+	while (++(*pos) < ac && av[*pos][0] == '-' &&
+		ft_strlen(av[*pos]) > 1)
+		parse_flag(&ls, av[*pos]);
+
 	return (ls);
 }

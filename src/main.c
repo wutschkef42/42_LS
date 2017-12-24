@@ -15,6 +15,7 @@
 
 int	main(int ac, char **av)
 {
-	parse(ac, av);
+	//print_stat(av[1]);
+	run(ac, av);
 	return (0);
 }
