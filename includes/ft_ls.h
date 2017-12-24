@@ -13,7 +13,10 @@
 #ifndef FT_LS_H
 # define FT_LS_H
 
+#include "libft.h"
+
 #include <stdio.h>
+
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -32,8 +35,6 @@
 
 typedef struct	s_ls
 {
-	int				options;
-
 	char			*file;
 	mode_t			mode;
 	nlink_t			nlink;
@@ -44,8 +45,8 @@ typedef struct	s_ls
 }				t_ls;
 
 int		run(int ac, char **av);
-t_ls	parse(int ac, char **av, int *pos);
-int		ft_ls(t_ls ls, char *dir);
+int		parse_options(int ac, char **av, int *pos);
+int		ft_ls(int options, char *dir);
 int		print_stat(char	*file);
 t_list	*to_list(char *dir);
 

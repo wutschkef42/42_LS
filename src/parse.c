@@ -33,7 +33,7 @@ static int	print_usage(char c)
 	return (0);
 }
 
-static int	parse_flag(t_ls *ls, char *av)
+static int	parse_option(int *options, char *av)
 {
 	int	i;
 
@@ -46,28 +46,28 @@ static int	parse_flag(t_ls *ls, char *av)
 			exit(1);
 		}
 		if (av[i] == 'R')
-			ls->options |= RC;
+			*options |= RC;
 		else if (av[i] == 'a')
-			ls->options |= AL;
+			*options |= AL;
 		else if (av[i] == 'l')
-			ls->options |= LO;
+			*options |= LO;
 		else if (av[i] == 'r')
-			ls->options |= RV;
+			*options |= RV;
 		else if (av[i] == 't')
-			ls->options |= TM;
+			*options |= TM;
 	}
 	return (1);
 }
 
-t_ls		parse(int ac, char **av, int *pos)
+int		parse_options(int ac, char **av, int *pos)
 {
 	t_ls	ls;
-
-	ls = init_ls();
+	int		options;
+	
 	*pos = 0;
 	while (++(*pos) < ac && av[*pos][0] == '-' &&
 		ft_strlen(av[*pos]) > 1)
-		parse_flag(&ls, av[*pos]);
+		parse_option(&options, av[*pos]);
 
-	return (ls);
+	return (options);
 }

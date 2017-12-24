@@ -5,16 +5,17 @@
 int	run(int ac, char **av)
 {
 	int		pos;
-	t_ls	ls;
+	int		options;
 
+	options = 0;
 	pos = 0;
-	ls = parse(ac, av, &pos);
+	options = parse_options(ac, av, &pos);
 
 	if (pos == ac)
-		ft_ls(ls, ".");
+		ft_ls(options, ".");
 	while (pos < ac)
 	{
-		ft_ls(ls, av[pos]);
+		ft_ls(options, av[pos]);
 		pos++;
 	}
 	return (1);
