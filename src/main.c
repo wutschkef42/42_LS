@@ -15,10 +15,6 @@
 
 int	main(int ac, char **av)
 {
-	ft_printf("hello world %s\n", "yeah");
 	parse(ac, av);
 	return (0);
-
-
-
 }

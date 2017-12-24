@@ -12,7 +12,16 @@
 
 #include "libft.h"
 
+
+int			ft_putstr(const char *str, size_t len)
+{
+	write(1, str, len);
+	return (len);
+}
+
+/*
 void	ft_putstr(char const *s)
 {
 	write(1, s, ft_strlen(s));
 }
+*/
