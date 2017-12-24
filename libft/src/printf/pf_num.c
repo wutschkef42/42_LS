@@ -6,7 +6,7 @@
 /*   By: wutschkef <felix.wutschke@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/22 20:25:40 by wutschkef         #+#    #+#             */
-/*   Updated: 2017/12/22 22:55:04 by wutschkef        ###   ########.fr       */
+/*   Updated: 2017/12/23 20:01:45 by wutschkef        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 int			ft_max(int a, int b)
 {
 	return (a > b ? a : b);
+}
+
+uintmax_t	ft_abs(intmax_t n)
+{
+	return (n < 0 ? -n : n);
 }
 
 size_t		numlen(intmax_t n)

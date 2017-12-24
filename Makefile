@@ -33,11 +33,11 @@ $(NAME): $(OBJ)
 
 clean:
 	rm -rf $(OBJDIR)
-	make -C $(FT) clean
+	make -C $(FTDIR) clean
 
 fclean: clean
 	rm $(NAME)
-	make -C $(FT) fclean
+	make -C $(FTDIR) fclean
 
 re: fclean all
 

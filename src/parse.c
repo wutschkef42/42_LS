@@ -28,7 +28,7 @@ static int	is_option(char c)
 
 static int	print_usage(char c)
 {
-	printf("ft_ls: illegal option -- %c\n", c);
+	ft_printf("ft_ls: illegal option -- %c\n", c);
 	printf("usage: ./ft_ls [-Raltr] [file...]\n");
 	return (0);
 }
