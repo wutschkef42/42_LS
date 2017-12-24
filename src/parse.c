@@ -13,13 +13,6 @@
 #include "libft.h"
 #include "ft_ls.h"
 
-static t_ls	init_ls(void)
-{
-	t_ls	ls;
-
-	ls.options = 0;
-	return (ls);
-}
 
 static int	is_option(char c)
 {
@@ -61,7 +54,6 @@ static int	parse_option(int *options, char *av)
 
 int		parse_options(int ac, char **av, int *pos)
 {
-	t_ls	ls;
 	int		options;
 	
 	*pos = 0;

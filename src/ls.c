@@ -55,9 +55,27 @@ int	print_basic(char *file)
 	return (0);
 }
 
-int	ft_ls(t_ls ls, char *dir)
+void	print_list(t_list *files)
 {
-	to_list(dir);
+	t_ls *ls;
+
+	while (files)
+	{
+		ls = (t_ls*)(files->content);
+		printf("name: %s, mode: %d, nlink: %d, uid: %u, gid: %u, size: %lld, time: %d\n", 
+		ls->file, ls->mode, ls->nlink, ls->uid, ls->gid, ls->size, ls->time);
+		files = files->next;
+	}
+
+}
+
+int	ft_ls(int options, char *dir)
+{
+	t_list	*files;
+
+	(void)options;
+	files = to_list(dir);
+	print_list(files);
 	return (0);
 
 

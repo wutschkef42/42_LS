@@ -55,6 +55,7 @@ t_list	*to_list(char *dir)
 		perror("couldn't open.");
 		return (NULL);
 	}
+	dp = readdir(dirp);
 	while (dp)
 	{
 		if ((dp = readdir(dirp)))

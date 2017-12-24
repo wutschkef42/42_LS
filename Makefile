@@ -26,13 +26,13 @@ obj:
 	mkdir -p $(OBJDIR)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(FTINC) -I $(INCDIR) -o $@ -c $<
+	$(CC) $(FLAGS) $(FTINC) -I $(INCDIR) -o $@ -c $<
 
 $(FTLIB):
 	make -C $(FTDIR)
 
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) $(FTLNK) -o $(NAME)
+	$(CC) $(FLAGS) $(OBJ) $(FTLNK) -o $(NAME)
 
 clean:
 	rm -rf $(OBJDIR)
