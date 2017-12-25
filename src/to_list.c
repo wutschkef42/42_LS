@@ -59,8 +59,7 @@ t_list	*to_list(char *dir)
 	dp = readdir(dirp);
 	while (dp != NULL)
 	{	
-		printf("%s\n", dp->d_name);
-		ft_lstadd(&files, ft_lstnew(make_node(dir, dp->d_name), sizeof(t_ls)));
+		ft_lstadd_sorted(&files, ft_lstnew(make_node(dir, dp->d_name), sizeof(t_ls)));
  		dp = readdir(dirp);
 	}
 	if (errno != 0)

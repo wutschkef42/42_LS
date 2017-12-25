@@ -49,6 +49,7 @@ int		parse_options(int ac, char **av, int *pos);
 int		ft_ls(int options, char *dir);
 int		print_stat(char	*file);
 t_list	*to_list(char *dir);
-
+void	ft_lstadd_sorted(t_list **alst, t_list *new);
+int		ft_strcmpc(const char *s1, const char *s2);
 
 #endif

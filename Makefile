@@ -5,7 +5,9 @@ SRC = main.c \
 		run.c \
 		parse.c \
 		ls.c \
-		to_list.c
+		to_list.c \
+		ft_lstadd_sorted.c \
+		tools.c
 
 SRCDIR = ./src
 OBJDIR = ./obj
@@ -31,7 +33,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 $(FTLIB):
 	make -C $(FTDIR)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(FTLIB)
 	$(CC) $(FLAGS) $(OBJ) $(FTLNK) -o $(NAME)
 
 clean:
