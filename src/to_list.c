@@ -23,13 +23,13 @@
 #include <grp.h>
 #include <time.h>
 
-static void	*make_node(char *file)
+static void	*make_node(char *dir, char *file)
 {
 	struct stat	fileStat;
 	t_ls		*node;
 
 	if (!(node = malloc(sizeof(t_ls))) ||
-		stat(file, &fileStat) < 0)
+		stat(ft_strjoin(ft_strjoin(dir, "/"), file), &fileStat) < 0)
 		return (NULL);
 	if (!(node->file = malloc(sizeof(char) * ft_strlen(file) + 1)))
 		return (NULL);
@@ -55,13 +55,13 @@ t_list	*to_list(char *dir)
 		perror("couldn't open.");
 		return (NULL);
 	}
+
 	dp = readdir(dirp);
-	while (dp)
-	{
-		if ((dp = readdir(dirp)))
-		{
-			ft_lstadd(&files, ft_lstnew(make_node(dp->d_name), sizeof(t_ls)));
-		}
+	while (dp != NULL)
+	{	
+		printf("%s\n", dp->d_name);
+		ft_lstadd(&files, ft_lstnew(make_node(dir, dp->d_name), sizeof(t_ls)));
+ 		dp = readdir(dirp);
 	}
 	if (errno != 0)
 		perror("error reading directory.");

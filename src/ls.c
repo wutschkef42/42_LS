@@ -66,7 +66,6 @@ void	print_list(t_list *files)
 		ls->file, ls->mode, ls->nlink, ls->uid, ls->gid, ls->size, ls->time);
 		files = files->next;
 	}
-
 }
 
 int	ft_ls(int options, char *dir)
@@ -77,36 +76,6 @@ int	ft_ls(int options, char *dir)
 	files = to_list(dir);
 	print_list(files);
 	return (0);
-
-
-	/*
-	DIR				*dirp;
-	struct dirent	*dp;
-
-	if (!(dirp = opendir(dir)))
-	{
-		perror("couldn't open.");
-		return (1);
-	}
-	while (dp)
-	{
-		if ((dp = readdir(dirp)))
-		{
-			if (ls.options & AL)
-				print_stat(dp->d_name);
-			else
-				print_basic(dp->d_name);
-		}
-			
-			
-	}	
-	if (errno != 0)
-		perror("error reading directory.");
-	else
-		(void)closedir(dirp);
-	return (0);
-	*/
-
 }
 
 
