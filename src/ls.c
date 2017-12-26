@@ -23,58 +23,30 @@
 #include <grp.h>
 #include <time.h>
 
-int	print_stat(char	*file)
+
+// replace init function by passing compound literal to to_list()
+static t_format	*init_format()
 {
-	struct stat fileStat;
+	t_format	*format;
 
-	if (stat(file, &fileStat) < 0)
-		return (1);
-	ft_printf( (S_ISDIR(fileStat.st_mode)) ? "d" : "-");
-	ft_printf( (fileStat.st_mode & S_IRUSR) ? "r" : "-");
-	ft_printf( (fileStat.st_mode & S_IWUSR) ? "w" : "-");
-	ft_printf( (fileStat.st_mode & S_IXUSR) ? "x" : "-");
-	ft_printf( (fileStat.st_mode & S_IRGRP) ? "r" : "-");
-	ft_printf( (fileStat.st_mode & S_IWGRP) ? "w" : "-");
-	ft_printf( (fileStat.st_mode & S_IXGRP) ? "x" : "-");
-	ft_printf( (fileStat.st_mode & S_IROTH) ? "r" : "-");
-	ft_printf( (fileStat.st_mode & S_IWOTH) ? "w" : "-");
-	ft_printf( (fileStat.st_mode & S_IXOTH) ? "x" : "-");
-	ft_printf( "  %2d", (fileStat.st_nlink));
-	ft_printf( " %s", getpwuid(fileStat.st_uid)->pw_name);
-	ft_printf( "  %s", getgrgid(fileStat.st_gid)->gr_name);
-	ft_printf( "  %5d", (fileStat.st_size));
-	ft_printf( " %s", (ft_strsub(ctime(&fileStat.st_mtime), 4, 12)));
-	ft_printf( " %s", file);
-	ft_printf("\n");
-	return (0);
-}
-
-int	print_basic(char *file)
-{
-	ft_printf("%s ", file);
-	return (0);
-}
-
-void	print_list(t_list *files)
-{
-	t_ls *ls;
-
-	while (files)
-	{
-		ls = (t_ls*)(files->content);
-		printf("name: %s, mode: %d, nlink: %d, uid: %u, gid: %u, size: %lld, time: %d\n", 
-		ls->file, ls->mode, ls->nlink, ls->uid, ls->gid, ls->size, ls->time);
-		files = files->next;
-	}
+	if (!(format = malloc(sizeof(t_format))))
+		return (NULL);
+	format->owner_width = 0;
+	format->group_width = 0;
+	format->nlink_width = 0;
+	format->size_width = 0;
+	return (format);
 }
 
 int	ft_ls(int options, char *dir)
 {
-	t_list	*files;
+	t_list		*files;
+	t_format	*format;
 
 	(void)options;
-	files = to_list(dir);
-	print_list(files);
+	format = init_format();
+	files = to_list(dir, format);
+//	print_list(files, format);
 	return (0);
 }
 

@@ -41,6 +41,8 @@ int			num_handler(t_pf_cspec cspec, va_list list)
 	char		sign;
 
 	nwrite = 0;
+	if (cspec.wildcard)
+		cspec.width = va_arg(list, int);
 	n = cast(cspec, list);
 	cspec.value = &n;
 	if (cspec.flags & FLAG_PLUS)

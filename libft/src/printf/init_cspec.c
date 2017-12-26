@@ -19,6 +19,7 @@ t_pf_cspec	init_cspec(const char *str, size_t len)
 	cspec = (t_pf_cspec) {
 		.str = (t_pf_str) { .str = str, .len = len },
 		.flags = 0,
+		.wildcard = 0,
 		.width = 0,
 		.prec = 0,
 		.lmod = NONE,

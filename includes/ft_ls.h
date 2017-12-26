@@ -41,15 +41,31 @@ typedef struct	s_ls
 	uid_t			uid;
 	gid_t			gid;
 	off_t			size;
-	int				time;
+	long			time;
 }				t_ls;
+
+typedef struct	s_format
+{
+	size_t	owner_width;
+	size_t	group_width;
+	size_t	nlink_width;
+	size_t	size_width;
+
+
+}				t_format;
 
 int		run(int ac, char **av);
 int		parse_options(int ac, char **av, int *pos);
 int		ft_ls(int options, char *dir);
-int		print_stat(char	*file);
-t_list	*to_list(char *dir);
+t_list	*to_list(char *dir, t_format *format);
 void	ft_lstadd_sorted(t_list **alst, t_list *new);
 int		ft_strcmpc(const char *s1, const char *s2);
+
+
+// print.c
+int		print_stat(t_ls *ls, t_format *format);
+int		print_basic(char *file);
+void	print_list(t_list *files, t_format *format);
+
 
 #endif

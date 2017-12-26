@@ -7,7 +7,8 @@ SRC = main.c \
 		ls.c \
 		to_list.c \
 		ft_lstadd_sorted.c \
-		tools.c
+		tools.c \
+		print.c
 
 SRCDIR = ./src
 OBJDIR = ./obj

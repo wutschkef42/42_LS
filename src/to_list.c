@@ -23,7 +23,39 @@
 #include <grp.h>
 #include <time.h>
 
-static void	*make_node(char *dir, char *file)
+size_t	ft_numlen(unsigned long n)
+{
+	int	len;
+
+	len = 0;
+	while (++len && (n = n / 10));
+	return (len);
+}
+
+static void	update_format(t_ls *node, t_format *format)
+{
+	char	*owner;
+	char	*group;
+
+	owner = getpwuid(node->uid)->pw_name;
+	group = getgrgid(node->gid)->gr_name;
+	format->owner_width = ft_strlen(owner) > format->owner_width ?
+		ft_strlen(owner) : format->owner_width;
+	format->group_width = ft_strlen(group) > format->group_width ?
+		ft_strlen(group) : format->group_width;
+	format->nlink_width = ft_numlen(node->nlink) > format->nlink_width ?
+		ft_numlen(node->nlink) : format->nlink_width;
+	format->size_width = ft_numlen(node->size) > format->size_width ?
+		ft_numlen(node->size) : format->size_width;
+}
+
+static void	print_format(t_format *format)
+{
+	printf("owner_width: %ld, group_width: %ld, nlink_width: %ld, size_width: %ld\n",
+		format->owner_width, format->group_width, format->nlink_width, format->size_width);
+}
+
+static void	*make_node(char *dir, char *file, t_format	*format)
 {
 	struct stat	fileStat;
 	t_ls		*node;
@@ -40,10 +72,12 @@ static void	*make_node(char *dir, char *file)
 	node->gid = fileStat.st_gid;
 	node->size = fileStat.st_size;
 	node->time = fileStat.st_mtime;
+	update_format(node, format);
+	print_format(format);
 	return ((void*)(node));
 }
 
-t_list	*to_list(char *dir)
+t_list	*to_list(char *dir, t_format *format)
 {
 	DIR				*dirp;
 	struct dirent	*dp;
@@ -59,7 +93,7 @@ t_list	*to_list(char *dir)
 	dp = readdir(dirp);
 	while (dp != NULL)
 	{	
-		ft_lstadd_sorted(&files, ft_lstnew(make_node(dir, dp->d_name), sizeof(t_ls)));
+		ft_lstadd_sorted(&files, ft_lstnew(make_node(dir, dp->d_name, format), sizeof(t_ls)));
  		dp = readdir(dirp);
 	}
 	if (errno != 0)

@@ -43,7 +43,12 @@ int		parse_flags(t_pf_cspec *cspec, const char *str, size_t *pos)
 int		parse_width(t_pf_cspec *cspec, const char *str, size_t *pos)
 {
 	int		width;
-
+	if (is_wildcard(str[*pos]))
+	{
+		(*pos)++;
+		cspec->wildcard = 1;
+		return (0);
+	}
 	if (pf_atoi(str, &width, pos))
 		return (1);
 	cspec->width = width;

@@ -33,6 +33,13 @@ int		is_flag(const char c)
 	return (0);
 }
 
+int		is_wildcard(const char c)
+{
+	if (ft_strchr("*", c))
+		return (1);
+	return (0);
+}
+
 int		is_prec(const char c)
 {
 	if (c == '.')
@@ -42,6 +49,6 @@ int		is_prec(const char c)
 
 int		is_token(const char c)
 {
-	return (is_conv(c) || is_flag(c) || is_prec(c) ||
-		is_lmod(c) || ft_isdigit(c));
+	return (is_conv(c) || is_flag(c) || is_wildcard(c) ||
+	is_prec(c) || is_lmod(c) || ft_isdigit(c));
 }

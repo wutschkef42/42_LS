@@ -41,6 +41,7 @@ typedef struct	s_pf_cspec
 {
 	t_pf_str	str;
 	int			flags;
+	int			wildcard;
 	int			width;
 	int			prec;
 	t_pf_lmod	lmod;
@@ -69,6 +70,7 @@ t_pf_cspec		init_cspec(const char *str, size_t len);
 t_pf_cspec		parse_cspec(const char *str, size_t len);
 int				dispatch(t_pf_cspec cspec, va_list params);
 int				is_token(const char c);
+int				is_wildcard(const char c);
 int				is_prec(const char c);
 int				is_flag(const char c);
 int				is_lmod(const char c);
