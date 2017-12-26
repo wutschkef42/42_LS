@@ -56,6 +56,7 @@ int		parse_options(int ac, char **av, int *pos)
 {
 	int		options;
 	
+	options = 0;
 	*pos = 0;
 	while (++(*pos) < ac && av[*pos][0] == '-' &&
 		ft_strlen(av[*pos]) > 1)

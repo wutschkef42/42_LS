@@ -7,10 +7,8 @@ int	run(int ac, char **av)
 	int		pos;
 	int		options;
 
-	options = 0;
 	pos = 0;
 	options = parse_options(ac, av, &pos);
-
 	if (pos == ac)
 		ft_ls(options, ".");
 	while (pos < ac)

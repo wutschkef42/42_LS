@@ -41,14 +41,17 @@ int	print_basic(char *file)
 	return (0);
 }
 
-void	print_list(t_list *files, t_format *format)
+void	print_list(t_list *files, int options, t_format *format)
 {
 	t_ls *ls;
 
 	while (files)
 	{
 		ls = (t_ls*)(files->content);
-        print_stat(ls, format);
+     	if (options & LO)
+        	print_stat(ls, format);
+		else
+			print_basic(ls->file);
 		//printf("name: %s, mode: %d, nlink: %d, uid: %u, gid: %u, size: %lld, time: %d\n", 
 		//ls->file, ls->mode, ls->nlink, ls->uid, ls->gid, ls->size, ls->time);
 		files = files->next;

@@ -65,7 +65,7 @@ int		ft_strcmpc(const char *s1, const char *s2);
 // print.c
 int		print_stat(t_ls *ls, t_format *format);
 int		print_basic(char *file);
-void	print_list(t_list *files, t_format *format);
+void	print_list(t_list *files, int options, t_format *format);
 void	print_format(t_format *format);
 
 #endif
