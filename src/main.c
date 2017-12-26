@@ -15,10 +15,6 @@
 
 int	main(int ac, char **av)
 {
-	(void)av;
-	(void)ac;
-	//print_stat(av[1]);
-	ft_printf("%*d\n", 5, 5);
-	//run(ac, av);
+	run(ac, av);
 	return (0);
 }

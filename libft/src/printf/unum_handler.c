@@ -45,6 +45,8 @@ int			unum_handler(t_pf_cspec cspec, va_list list)
 		return (num_handler(cspec, list));
 	nwrite = 0;
 	len = 0;
+	if (cspec.wildcard)
+		cspec.width = va_arg(list, int);
 	if (cspec.flags & FLAG_HASH || cspec.conv == 'p')
 		len = (cspec.conv == 'p' ? 1 : 2);
 	n = ucast(cspec, list);

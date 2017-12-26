@@ -49,7 +49,7 @@ static void	update_format(t_ls *node, t_format *format)
 		ft_numlen(node->size) : format->size_width;
 }
 
-static void	print_format(t_format *format)
+void	print_format(t_format *format)
 {
 	printf("owner_width: %ld, group_width: %ld, nlink_width: %ld, size_width: %ld\n",
 		format->owner_width, format->group_width, format->nlink_width, format->size_width);
@@ -73,7 +73,6 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 	node->size = fileStat.st_size;
 	node->time = fileStat.st_mtime;
 	update_format(node, format);
-	print_format(format);
 	return ((void*)(node));
 }
 

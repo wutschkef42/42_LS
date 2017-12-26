@@ -19,6 +19,8 @@ int		string_handler(t_pf_cspec cspec, va_list params)
 	size_t	len;
 
 	nwrite = 0;
+	if (cspec.wildcard)
+		cspec.width = va_arg(params, int);
 	str = va_arg(params, char *);
 	if (str == NULL)
 		str = "(null)";

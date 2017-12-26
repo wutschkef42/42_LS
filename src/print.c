@@ -25,9 +25,10 @@ int	print_stat(t_ls	*ls, t_format *format)
 	ft_printf( (ls->mode & S_IROTH) ? "r" : "-");
 	ft_printf( (ls->mode & S_IWOTH) ? "w" : "-");
 	ft_printf( (ls->mode & S_IXOTH) ? "x" : "-");
-	ft_printf( " %s", getpwuid(ls->uid)->pw_name);
-	ft_printf( "  %s", getgrgid(ls->gid)->gr_name);
-	ft_printf( "  %5d", (ls->size));
+	ft_printf( "  %*d", format->nlink_width, (ls->nlink));
+	ft_printf( " %-*s", format->owner_width, getpwuid(ls->uid)->pw_name);
+	ft_printf( "  %-*s", format->group_width, getgrgid(ls->gid)->gr_name);
+	ft_printf( "  %*d", format->size_width, (ls->size));
 	ft_printf( " %s", (ft_strsub(ctime(&ls->time), 4, 12)));
 	ft_printf( " %s", ls->file);
 	ft_printf("\n");
