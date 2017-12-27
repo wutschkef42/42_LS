@@ -53,7 +53,7 @@ int	ft_ls(int options, char *dir)
 	format = init_format();
 	files = to_list(dir, options, format);
 	print_list(files, options, format);
-	while ((files = files->next))
+	while ((options & RC) && (files = files->next))
 	{
 		if (S_ISDIR(((t_ls*)(files->content))->mode) && (not_dot(((t_ls*)(files->content))->file)))
 			ft_ls(options, ft_strjoin(ft_strjoin(dir, "/"), ((t_ls*)(files->content))->file));
