@@ -97,6 +97,7 @@ t_list	*to_list(char *dir, int options, t_format *format)
 
 	(void)options;
 	files = NULL;
+	printf("ATTEMPT TO OPEN: %s\n", dir);
 	if (!(dirp = opendir(dir)))
 	{
 		perror("couldn't open.");
