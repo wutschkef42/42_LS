@@ -32,10 +32,13 @@
 # define RV 8
 # define TM 16
 
+# define LINK_REF_SIZE 100
+
 
 typedef struct	s_ls
 {
 	char			*file;
+	char			*link_ref;
 	mode_t			mode;
 	nlink_t			nlink;
 	uid_t			uid;
@@ -70,5 +73,14 @@ void	print_format(t_format *format);
 
 void	reverse_list(t_list **head);
 void    reverse_list_rec(t_list **head);
+
+int		comp_lex(t_list *a, t_list *b);
+int		comp_tstamp(t_list *a, t_list *b);
+
+int		not_dot_dir(char *file);
+int		not_dot_file(char *file);
+
+size_t	ft_numlen(unsigned long n);
+
 
 #endif

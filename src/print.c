@@ -12,10 +12,19 @@
 #include <grp.h>
 #include <time.h>
 
-int	print_stat(t_ls	*ls, t_format *format)
+void	print_filetype(t_ls *ls)
 {
-    (void)format;
-	ft_printf( (S_ISDIR(ls->mode)) ? "d" : "-");
+	if (S_ISDIR(ls->mode))
+		ft_printf("d");
+	else if (S_ISLNK(ls->mode))
+		ft_printf("l");
+	else
+		ft_printf("-");
+}
+
+int	print_stat(t_ls	*ls, t_format *format)
+{	
+	print_filetype(ls);
 	ft_printf( (ls->mode & S_IRUSR) ? "r" : "-");
 	ft_printf( (ls->mode & S_IWUSR) ? "w" : "-");
 	ft_printf( (ls->mode & S_IXUSR) ? "x" : "-");
@@ -31,13 +40,15 @@ int	print_stat(t_ls	*ls, t_format *format)
 	ft_printf( "  %*d", format->size_width, (ls->size));
 	ft_printf( " %s", (ft_strsub(ctime(&ls->time), 4, 12)));
 	ft_printf( " %s", ls->file);
+	if (S_ISLNK(ls->mode))
+		ft_printf(" -> %s", ls->link_ref);
 	ft_printf("\n");
 	return (0);
 }
 
-int	print_basic(char *file)
+int		print_basic(char *file)
 {
-	ft_printf("%s ", file);
+	ft_printf("%s\n", file);
 	return (0);
 }
 
@@ -45,18 +56,23 @@ void	print_list(t_list *files, int options, t_format *format)
 {
 	t_ls *ls;
 
-	if (options & RV)
-		reverse_list_rec(&files);
 	while (files)
 	{
 		ls = (t_ls*)(files->content);
 
      	if (options & LO)
-        	print_stat(ls, format);
+     	{
+			if ((options & AL) || not_dot_file(ls->file))
+				print_stat(ls, format);
+     	}	
 		else
-			print_basic(ls->file);
-		//printf("name: %s, mode: %d, nlink: %d, uid: %u, gid: %u, size: %lld, time: %d\n", 
-		//ls->file, ls->mode, ls->nlink, ls->uid, ls->gid, ls->size, ls->time);
+		{
+			if ((options &  AL) || not_dot_file(ls->file))
+			{
+				print_basic(ls->file);
+			}
+		}
 		files = files->next;
 	}
+	ft_printf("\n");
 }

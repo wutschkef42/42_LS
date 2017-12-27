@@ -38,12 +38,7 @@ static t_format	*init_format()
 	return (format);
 }
 
-int	not_dot(char *file)
-{
-	if (ft_strcmp(file, ".") != 0 && ft_strcmp(file, "..") != 0)
-		return (1);
-	return (0);
-}
+
 
 int	ft_ls(int options, char *dir)
 {
@@ -51,11 +46,12 @@ int	ft_ls(int options, char *dir)
 	t_format	*format;
 
 	format = init_format();
-	files = to_list(dir, options, format);
+	if (!(files = to_list(dir, options, format)))
+		return (-1);
 	print_list(files, options, format);
 	while ((options & RC) && (files = files->next))
 	{
-		if (S_ISDIR(((t_ls*)(files->content))->mode) && (not_dot(((t_ls*)(files->content))->file)))
+		if (S_ISDIR(((t_ls*)(files->content))->mode) && (not_dot_dir(((t_ls*)(files->content))->file)))
 			ft_ls(options, ft_strjoin(ft_strjoin(dir, "/"), ((t_ls*)(files->content))->file));
 	}
 	return (0);

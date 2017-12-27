@@ -23,14 +23,7 @@
 #include <grp.h>
 #include <time.h>
 
-size_t	ft_numlen(unsigned long n)
-{
-	int	len;
 
-	len = 0;
-	while (++len && (n = n / 10));
-	return (len);
-}
 
 static void	update_format(t_ls *node, t_format *format)
 {
@@ -59,12 +52,28 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 {
 	struct stat	fileStat;
 	t_ls		*node;
+	int			i;
 
 	if (!(node = malloc(sizeof(t_ls))) ||
-		stat(ft_strjoin(ft_strjoin(dir, "/"), file), &fileStat) < 0)
+		lstat(ft_strjoin(ft_strjoin(dir, "/"), file), &fileStat) < 0)
 		return (NULL);
 	if (!(node->file = malloc(sizeof(char) * ft_strlen(file) + 1)))
 		return (NULL);
+	if (S_ISLNK(fileStat.st_mode))
+	{
+		i = 1;
+		if (!(node->link_ref = ft_memalloc(sizeof(char) * LINK_REF_SIZE)))
+			return (NULL);
+		readlink(ft_strjoin(ft_strjoin(dir, "/"), file), node->link_ref, LINK_REF_SIZE);
+		while ((node->link_ref)[LINK_REF_SIZE * i] != 0)
+		{
+			i++;
+			free(node->link_ref);
+			if (!(node->link_ref = ft_memalloc(sizeof(char) * LINK_REF_SIZE * i)))
+				return (NULL);
+			readlink(ft_strjoin(ft_strjoin(dir, "/"), file), node->link_ref, LINK_REF_SIZE * i);
+		}
+	}
 	ft_strcpy(node->file, file);
 	node->mode = fileStat.st_mode;
 	node->nlink = fileStat.st_nlink;
@@ -77,17 +86,6 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 }
 
 
-int		comp_lex(t_list *a, t_list *b)
-{
-	return (ft_strcmp(((t_ls*)(a->content))->file,
-		((t_ls*)(b->content))->file));
-}
-
-int		comp_tstamp(t_list *a, t_list *b)
-{
-	return (((t_ls*)(a->content))->time >=
-		((t_ls*)(b->content))->time ? 1 : -1);
-}
 
 t_list	*to_list(char *dir, int options, t_format *format)
 {
@@ -97,7 +95,7 @@ t_list	*to_list(char *dir, int options, t_format *format)
 
 	(void)options;
 	files = NULL;
-	printf("ATTEMPT TO OPEN: %s\n", dir);
+	//printf("ATTEMPT TO OPEN: %s\n", dir);
 	if (!(dirp = opendir(dir)))
 	{
 		perror("couldn't open.");
@@ -114,9 +112,11 @@ t_list	*to_list(char *dir, int options, t_format *format)
 			 	dp->d_name, format), sizeof(t_ls)), &comp_lex);
 		 dp = readdir(dirp);
 	}
+	if (options & RV)
+		reverse_list(&files);
 	if (errno != 0)
 		perror("error reading directory.");
-	else
-		(void)closedir(dirp);
+	closedir(dirp);
 	return (files);
 }
+

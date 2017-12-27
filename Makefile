@@ -9,7 +9,9 @@ SRC = main.c \
 		ft_lstadd_sort.c \
 		tools.c \
 		print.c \
-		recursive_reverse_list.c
+		recursive_reverse_list.c \
+		compare.c \
+		handle_dotfiles.c
 
 SRCDIR = ./src
 OBJDIR = ./obj
