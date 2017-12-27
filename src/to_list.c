@@ -76,6 +76,11 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 	return ((void*)(node));
 }
 
+int		comp(t_list *a, t_list *b)
+{
+	return (ft_strcmp(((t_ls*)(a->content))->file, ((t_ls*)(b->content))->file));
+}
+
 t_list	*to_list(char *dir, t_format *format)
 {
 	DIR				*dirp;
@@ -92,7 +97,7 @@ t_list	*to_list(char *dir, t_format *format)
 	dp = readdir(dirp);
 	while (dp != NULL)
 	{	
-		ft_lstadd_sorted(&files, ft_lstnew(make_node(dir, dp->d_name, format), sizeof(t_ls)));
+		ft_lstadd_sort(&files, ft_lstnew(make_node(dir, dp->d_name, format), sizeof(t_ls)), &comp);
  		dp = readdir(dirp);
 	}
 	if (errno != 0)

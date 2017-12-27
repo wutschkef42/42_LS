@@ -58,7 +58,7 @@ int		run(int ac, char **av);
 int		parse_options(int ac, char **av, int *pos);
 int		ft_ls(int options, char *dir);
 t_list	*to_list(char *dir, t_format *format);
-void	ft_lstadd_sorted(t_list **alst, t_list *new);
+void	ft_lstadd_sort(t_list **alst, t_list *new, int (*cmp)(t_list*, t_list*));
 int		ft_strcmpc(const char *s1, const char *s2);
 
 
