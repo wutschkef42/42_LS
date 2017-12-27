@@ -45,9 +45,12 @@ void	print_list(t_list *files, int options, t_format *format)
 {
 	t_ls *ls;
 
+	if (options & RV)
+		reverse_list_rec(&files);
 	while (files)
 	{
 		ls = (t_ls*)(files->content);
+
      	if (options & LO)
         	print_stat(ls, format);
 		else

@@ -76,6 +76,7 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 	return ((void*)(node));
 }
 
+
 int		comp(t_list *a, t_list *b)
 {
 	return (ft_strcmp(((t_ls*)(a->content))->file, ((t_ls*)(b->content))->file));

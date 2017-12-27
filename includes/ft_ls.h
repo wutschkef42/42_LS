@@ -68,4 +68,7 @@ int		print_basic(char *file);
 void	print_list(t_list *files, int options, t_format *format);
 void	print_format(t_format *format);
 
+void	reverse_list(t_list **head);
+void    reverse_list_rec(t_list **head);
+
 #endif

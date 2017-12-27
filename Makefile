@@ -8,7 +8,8 @@ SRC = main.c \
 		to_list.c \
 		ft_lstadd_sort.c \
 		tools.c \
-		print.c
+		print.c \
+		recursive_reverse_list.c
 
 SRCDIR = ./src
 OBJDIR = ./obj
