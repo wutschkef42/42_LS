@@ -1,7 +1,7 @@
 
 #include "libft.h"
 
-static void    rev_recurse(t_list **head, t_list *node)
+static void     rev_recurse(t_list **head, t_list *node)
 {
     if (!(node->next))
     {

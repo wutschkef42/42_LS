@@ -77,29 +77,41 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 }
 
 
-int		comp(t_list *a, t_list *b)
+int		comp_lex(t_list *a, t_list *b)
 {
-	return (ft_strcmp(((t_ls*)(a->content))->file, ((t_ls*)(b->content))->file));
+	return (ft_strcmp(((t_ls*)(a->content))->file,
+		((t_ls*)(b->content))->file));
 }
 
-t_list	*to_list(char *dir, t_format *format)
+int		comp_tstamp(t_list *a, t_list *b)
+{
+	return (((t_ls*)(a->content))->time >=
+		((t_ls*)(b->content))->time ? 1 : -1);
+}
+
+t_list	*to_list(char *dir, int options, t_format *format)
 {
 	DIR				*dirp;
 	struct dirent	*dp;
 	t_list			*files;
 
+	(void)options;
 	files = NULL;
 	if (!(dirp = opendir(dir)))
 	{
 		perror("couldn't open.");
 		return (NULL);
 	}
-
 	dp = readdir(dirp);
 	while (dp != NULL)
-	{	
-		ft_lstadd_sort(&files, ft_lstnew(make_node(dir, dp->d_name, format), sizeof(t_ls)), &comp);
- 		dp = readdir(dirp);
+	{
+		if (options & TM)	
+			ft_lstadd_sort(&files, ft_lstnew(make_node(dir,
+				dp->d_name, format), sizeof(t_ls)), &comp_tstamp);
+ 		else
+		 	ft_lstadd_sort(&files, ft_lstnew(make_node(dir,
+			 	dp->d_name, format), sizeof(t_ls)), &comp_lex);
+		 dp = readdir(dirp);
 	}
 	if (errno != 0)
 		perror("error reading directory.");

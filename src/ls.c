@@ -44,7 +44,7 @@ int	ft_ls(int options, char *dir)
 	t_format	*format;
 
 	format = init_format();
-	files = to_list(dir, format);
+	files = to_list(dir, options, format);
 	print_list(files, options, format);
 	return (0);
 }
