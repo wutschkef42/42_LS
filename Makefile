@@ -9,8 +9,8 @@ SRC = main.c \
 		tools.c \
 		print.c \
 		list/compare.c \
-		handle_dotfiles.c \
-		list/free_list.c
+		list/list_tools.c \
+		handle_dotfiles.c
 
 SRCDIR = ./src
 OBJDIR = ./obj

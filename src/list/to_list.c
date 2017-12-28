@@ -89,7 +89,8 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 	node->uid = fileStat.st_uid;
 	node->gid = fileStat.st_gid;
 	node->size = fileStat.st_size;
-	node->time = fileStat.st_mtime;
+	node->time = fileStat.st_mtimespec.tv_sec;
+	node->time_nsec = fileStat.st_mtimespec.tv_nsec;
 	update_format(node, format);
 	return ((void*)(node));
 }

@@ -56,13 +56,10 @@ int	ft_ls(int options, char *dir)
 	print_list(files, options, format);
 	free(format);
 	tmp = files;
-// 	ft_printf("\n%s:\n", dir);
 	while ((options & RC) && files)
 	{
-		printf("-------%s\n", (((t_ls*)(files->content))->file));
 		if (S_ISDIR(((t_ls*)(files->content))->mode) && (not_dot_dir(((t_ls*)(files->content))->file)))
 		{
-			//ft_printf("----------recursive Call: %s\n", ((t_ls*)(files->content))->file);
 			path2 = ft_strjoin(dir, "/");
 			path = ft_strfjoin(path2, ((t_ls*)(files->content))->file);
 			ft_ls(options, path);

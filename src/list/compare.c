@@ -16,5 +16,13 @@ int		comp_tstamp(t_list *a, t_list *b)
 	else if (((t_ls*)(a->content))->time >
 		((t_ls*)(b->content))->time)
 		return (-1);
-	return (0);
+	else if (((t_ls*)(a->content))->time_nsec <
+		((t_ls*)(b->content))->time_nsec)
+		return (1);
+	else if (((t_ls*)(a->content))->time_nsec >
+		((t_ls*)(b->content))->time_nsec)
+		return (-1);
+	else
+		return (comp_lex(a, b));
+		
 }
