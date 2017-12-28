@@ -6,7 +6,6 @@ SRC = main.c \
 		parse.c \
 		ls.c \
 		to_list.c \
-		ft_lstadd_sort.c \
 		tools.c \
 		print.c \
 		recursive_reverse_list.c \

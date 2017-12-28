@@ -52,6 +52,7 @@ int	ft_ls(int options, char *dir, int depth)
 	print_list(files, options, format);
 	while ((options & RC) && (files = files->next))
 	{
+		printf("-------%s\n", (((t_ls*)(files->content))->file));
 		if (S_ISDIR(((t_ls*)(files->content))->mode) && (not_dot_dir(((t_ls*)(files->content))->file)))
 			ft_ls(options, ft_strjoin(ft_strjoin(dir, "/"), ((t_ls*)(files->content))->file), depth++);
 	}

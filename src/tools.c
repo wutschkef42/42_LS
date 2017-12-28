@@ -1,15 +1,6 @@
 
 #include "libft.h"
-
-int	ft_strcmpc(const char *s1, const char *s2)
-{
-	while (*s1 && ft_tolower(*s1) == ft_tolower(*s2))
-	{
-		s1++;
-		s2++;        
-	}
-	return ((unsigned char)ft_tolower(*s1) - (unsigned char)ft_tolower(*s2));
-}
+#include "ft_ls.h"
 
 size_t	ft_numlen(unsigned long n)
 {
@@ -18,4 +9,35 @@ size_t	ft_numlen(unsigned long n)
 	len = 0;
 	while (++len && (n = n / 10));
 	return (len);
+}
+
+void	ft_lstadd_sort(t_list **alst, t_list *new, int (*cmp)(t_list*, t_list*))
+{
+    t_list  *cur;
+    t_list  *prev;
+
+    if (!alst)
+        return ;
+    if (!(*alst))
+    {
+        *alst = new;
+        return ;
+    }
+    prev = NULL;
+    cur = *alst;
+    while (cur)
+    {
+        if ((*cmp)(cur, new) >= 0)
+        {
+            new->next = cur;
+            if (prev)
+                prev->next = new;
+            else
+                *alst = new;
+            return ;
+        }
+        prev = prev ? prev->next : *alst;
+        cur = cur->next;
+    }
+    prev->next = new;
 }
