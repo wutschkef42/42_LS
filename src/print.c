@@ -42,7 +42,6 @@ int	print_stat(t_ls	*ls, t_format *format)
 	ft_printf( " %s", ls->file);
 	if (S_ISLNK(ls->mode))
 		ft_printf(" -> %s", ls->link_ref);
-	ft_printf("\n");
 	return (0);
 }
 
@@ -63,16 +62,18 @@ void	print_list(t_list *files, int options, t_format *format)
      	if (options & LO)
      	{
 			if ((options & AL) || not_dot_file(ls->file))
+			{
 				print_stat(ls, format);
+				if (files->next)
+					ft_printf("\n");
+			}	
      	}	
 		else
 		{
 			if ((options &  AL) || not_dot_file(ls->file))
-			{
 				print_basic(ls->file);
-			}
 		}
 		files = files->next;
 	}
-	ft_printf("\n");
+	//ft_printf("\n");
 }

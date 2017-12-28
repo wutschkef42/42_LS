@@ -40,7 +40,7 @@ static t_format	*init_format()
 
 
 
-int	ft_ls(int options, char *dir)
+int	ft_ls(int options, char *dir, int depth)
 {
 	t_list		*files;
 	t_format	*format;
@@ -48,11 +48,12 @@ int	ft_ls(int options, char *dir)
 	format = init_format();
 	if (!(files = to_list(dir, options, format)))
 		return (-1);
+	ft_printf("\n%s:\n", dir);
 	print_list(files, options, format);
 	while ((options & RC) && (files = files->next))
 	{
 		if (S_ISDIR(((t_ls*)(files->content))->mode) && (not_dot_dir(((t_ls*)(files->content))->file)))
-			ft_ls(options, ft_strjoin(ft_strjoin(dir, "/"), ((t_ls*)(files->content))->file));
+			ft_ls(options, ft_strjoin(ft_strjoin(dir, "/"), ((t_ls*)(files->content))->file), depth++);
 	}
 	return (0);
 }
