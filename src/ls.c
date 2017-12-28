@@ -67,7 +67,11 @@ int	ft_ls(int options, char *dir)
 
 	format = init_format();
 	if (!(files = to_list(dir, options, format)))
+	{
+		free(format);
 		return (-1);
+	}
+		
 	print_list(files, options, format);
 	free(format);
 	tmp = files;

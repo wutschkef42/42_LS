@@ -16,6 +16,5 @@ int	run(int ac, char **av)
 		ft_ls(options, av[pos]);
 		pos++;
 	}
-	//while (1);
 	return (1);
 }
