@@ -82,5 +82,6 @@ int		not_dot_file(char *file);
 
 size_t	ft_numlen(unsigned long n);
 
+char	*ft_strfjoin(char const *s1, char const *s2);
 
 #endif
