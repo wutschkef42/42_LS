@@ -51,7 +51,7 @@ int	print_stat(t_ls	*ls, t_format *format)
 
 int		print_basic(char *file)
 {
-	ft_printf("%s\n", file);
+	ft_printf("%s", file);
 	return (0);
 }
 
@@ -75,9 +75,14 @@ void	print_list(t_list *files, int options, t_format *format)
 		else
 		{
 			if ((options &  AL) || not_dot_file(ls->file))
-				print_basic(ls->file);
+			{
+				print_basic(ls->file);				
+				if (files->next)
+					ft_printf("\n");
+			}
+				
 		}
 		files = files->next;
 	}
-	//ft_printf("\n");
+	ft_printf("\n");
 }

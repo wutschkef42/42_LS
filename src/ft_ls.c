@@ -62,6 +62,7 @@ int	ft_ls(int options, char *dir)
 		{
 			path2 = ft_strjoin(dir, "/");
 			path = ft_strfjoin(path2, ((t_ls*)(files->content))->file);
+			ft_printf("\n%s:\n", path);
 			ft_ls(options, path);
 			free(path);
 		}	

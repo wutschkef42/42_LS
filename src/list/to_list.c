@@ -56,9 +56,13 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 	char		*tmp;
 	
 	tmp = ft_strfjoin(ft_strjoin(dir, "/"), file);
-
-	if (!(node = malloc(sizeof(t_ls))) ||
-		lstat(tmp, &fileStat) < 0)
+	int ret = lstat(tmp, &fileStat);
+	if (ret < 0)
+	{
+		ft_printf("GOTCHA\n");
+		return (NULL);
+	}
+	if (!(node = malloc(sizeof(t_ls))))
 		return (NULL);
 	free(tmp);
 	if (!(node->file = malloc(sizeof(char) * ft_strlen(file) + 1)))
@@ -95,6 +99,16 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 	return ((void*)(node));
 }
 
+int		is_dir(char *path)
+{
+	struct stat stats;
+
+	if (lstat(path, &stats) == -1)
+		return (0);
+	return (S_ISDIR(stats.st_mode));
+}
+
+
 t_list	*to_list(char *dir, int options, t_format *format)
 {
 	DIR				*dirp;
@@ -104,28 +118,51 @@ t_list	*to_list(char *dir, int options, t_format *format)
 
 	(void)options;
 	files = NULL;
+	//dirp = NULL;
 	//printf("ATTEMPT TO OPEN: %s\n", dir);
-	if (!(dirp = opendir(dir)))
+	// ft_printf("########%s\n", dir);
+	if (!(ft_printf("$$$$%d\n", is_dir(dir))) || !(dirp = opendir(dir)))
 	{
+		ft_printf("in opendir\n");
 		perror("couldn't open.");
 		return (NULL);
-	}
+	}	
+	ft_printf("before readdir\n");
 	dp = readdir(dirp);
+		ft_printf("after readdir\n");
 	while (dp != NULL)
 	{
 		if (options & TM)	
 		{
+			ft_printf("beginning while\n");
 			tmp = make_node(dir,dp->d_name, format);
+			if (!tmp)
+			{
+				ft_printf("@@@@MAAAAN\n");
+				return (NULL);
+			}
+				
 			ft_lstadd_sort(&files, ft_lstnew(tmp, sizeof(t_ls)), &comp_tstamp);
+			ft_printf("after if\n");
 		}
  		else
 		{
+			ft_printf("beginning else\n");
+			ft_printf("%s@@@@@@@@\n", dp->d_name);
 			tmp = make_node(dir,dp->d_name, format);
+			if (!tmp)
+			{
+				ft_printf("@@@@MAAAAN\n");
+				return (NULL);
+			}
+			ft_printf("after makenode\n");
 			ft_lstadd_sort(&files, ft_lstnew(tmp, sizeof(t_ls)), &comp_lex);	
 		}
+			ft_printf("after else\n");
 		free(tmp);
 		dp = readdir(dirp);
 	}
+	ft_printf("after loop\n");
 	if (options & RV)
 		reverse_list(&files);
 	if (errno != 0)
