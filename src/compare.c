@@ -10,6 +10,11 @@ int		comp_lex(t_list *a, t_list *b)
 
 int		comp_tstamp(t_list *a, t_list *b)
 {
-	return (((t_ls*)(a->content))->time <=
-		((t_ls*)(b->content))->time ? 1 : -1);
+	if (((t_ls*)(a->content))->time <
+		((t_ls*)(b->content))->time)
+		return (1);
+	else if (((t_ls*)(a->content))->time >
+		((t_ls*)(b->content))->time)
+		return (-1);
+	return (0);
 }
