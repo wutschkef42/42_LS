@@ -38,24 +38,58 @@ static t_format	*init_format()
 	return (format);
 }
 
+void	clear_ls(t_ls *ls)
+{
+	free(ls->file);
+	free(ls->link_ref);
+	free(ls);
+}
 
+void	clear_list(t_list *files)
+{
+	t_list	*tmp;
 
-int	ft_ls(int options, char *dir, int depth)
+	while (files)
+	{
+		tmp = files->next;
+		clear_ls((t_ls*)(files->content));
+		free(files);
+		files = tmp;
+	}
+}
+
+int	ft_ls(int options, char *dir)
 {
 	t_list		*files;
+	t_list		*tmp;
 	t_format	*format;
+	char		*path, *path2;
 
 	format = init_format();
 	if (!(files = to_list(dir, options, format)))
+	{
+		free(format);
 		return (-1);
-	ft_printf("\n%s:\n", dir);
+	}
+		
 	print_list(files, options, format);
-	while ((options & RC) && (files = files->next))
+	free(format);
+	tmp = files;
+// 	ft_printf("\n%s:\n", dir);
+	while ((options & RC) && files)
 	{
 		printf("-------%s\n", (((t_ls*)(files->content))->file));
 		if (S_ISDIR(((t_ls*)(files->content))->mode) && (not_dot_dir(((t_ls*)(files->content))->file)))
-			ft_ls(options, ft_strjoin(ft_strjoin(dir, "/"), ((t_ls*)(files->content))->file), depth++);
+		{
+			//ft_printf("----------recursive Call: %s\n", ((t_ls*)(files->content))->file);
+			path2 = ft_strjoin(dir, "/");
+			path = ft_strfjoin(path2, ((t_ls*)(files->content))->file);
+			ft_ls(options, path);
+			free(path);
+		}	
+		 files = files->next;	
 	}
+	clear_list(tmp);
 	return (0);
 }
 

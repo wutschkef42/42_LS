@@ -48,30 +48,43 @@ void	print_format(t_format *format)
 		format->owner_width, format->group_width, format->nlink_width, format->size_width);
 }
 
+
+
+
+
 static void	*make_node(char *dir, char *file, t_format	*format)
 {
 	struct stat	fileStat;
 	t_ls		*node;
 	int			i;
+	char		*tmp;
+	
+	tmp = ft_strfjoin(ft_strjoin(dir, "/"), file);
 
 	if (!(node = malloc(sizeof(t_ls))) ||
-		lstat(ft_strjoin(ft_strjoin(dir, "/"), file), &fileStat) < 0)
+		lstat(tmp, &fileStat) < 0)
 		return (NULL);
+	free(tmp);
 	if (!(node->file = malloc(sizeof(char) * ft_strlen(file) + 1)))
 		return (NULL);
+	node->link_ref = NULL;
 	if (S_ISLNK(fileStat.st_mode))
 	{
 		i = 1;
 		if (!(node->link_ref = ft_memalloc(sizeof(char) * LINK_REF_SIZE)))
 			return (NULL);
-		readlink(ft_strjoin(ft_strjoin(dir, "/"), file), node->link_ref, LINK_REF_SIZE);
+		tmp = ft_strfjoin(ft_strjoin(dir, "/"), file);
+		readlink(tmp, node->link_ref, LINK_REF_SIZE);
+		free(tmp);
 		while ((node->link_ref)[LINK_REF_SIZE * i] != 0)
 		{
 			i++;
 			free(node->link_ref);
 			if (!(node->link_ref = ft_memalloc(sizeof(char) * LINK_REF_SIZE * i)))
 				return (NULL);
-			readlink(ft_strjoin(ft_strjoin(dir, "/"), file), node->link_ref, LINK_REF_SIZE * i);
+			tmp = ft_strfjoin(ft_strjoin(dir, "/"), file);
+			readlink(tmp, node->link_ref, LINK_REF_SIZE * i);
+			free(tmp);
 		}
 	}
 	ft_strcpy(node->file, file);
@@ -92,6 +105,7 @@ t_list	*to_list(char *dir, int options, t_format *format)
 	DIR				*dirp;
 	struct dirent	*dp;
 	t_list			*files;
+	void			*tmp;
 
 	(void)options;
 	files = NULL;
@@ -105,12 +119,17 @@ t_list	*to_list(char *dir, int options, t_format *format)
 	while (dp != NULL)
 	{
 		if (options & TM)	
-			ft_lstadd_sort(&files, ft_lstnew(make_node(dir,
-				dp->d_name, format), sizeof(t_ls)), &comp_tstamp);
+		{
+			tmp = make_node(dir,dp->d_name, format);
+			ft_lstadd_sort(&files, ft_lstnew(tmp, sizeof(t_ls)), &comp_tstamp);
+		}
  		else
-		 	ft_lstadd_sort(&files, ft_lstnew(make_node(dir,
-			 	dp->d_name, format), sizeof(t_ls)), &comp_lex);
-		 dp = readdir(dirp);
+		{
+			tmp = make_node(dir,dp->d_name, format);
+			ft_lstadd_sort(&files, ft_lstnew(tmp, sizeof(t_ls)), &comp_lex);	
+		}
+		free(tmp);
+		dp = readdir(dirp);
 	}
 	if (options & RV)
 		reverse_list(&files);

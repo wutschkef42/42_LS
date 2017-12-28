@@ -24,6 +24,8 @@ void	print_filetype(t_ls *ls)
 
 int	print_stat(t_ls	*ls, t_format *format)
 {	
+	char	*s;
+
 	print_filetype(ls);
 	ft_printf( (ls->mode & S_IRUSR) ? "r" : "-");
 	ft_printf( (ls->mode & S_IWUSR) ? "w" : "-");
@@ -38,7 +40,9 @@ int	print_stat(t_ls	*ls, t_format *format)
 	ft_printf( " %-*s", format->owner_width, getpwuid(ls->uid)->pw_name);
 	ft_printf( "  %-*s", format->group_width, getgrgid(ls->gid)->gr_name);
 	ft_printf( "  %*d", format->size_width, (ls->size));
-	ft_printf( " %s", (ft_strsub(ctime(&ls->time), 4, 12)));
+	s = ft_strsub(ctime(&ls->time), 4, 12);
+	ft_printf( " %s", s);
+	free(s);
 	ft_printf( " %s", ls->file);
 	if (S_ISLNK(ls->mode))
 		ft_printf(" -> %s", ls->link_ref);

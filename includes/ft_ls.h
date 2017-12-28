@@ -59,7 +59,7 @@ typedef struct	s_format
 
 int		run(int ac, char **av);
 int		parse_options(int ac, char **av, int *pos);
-int		ft_ls(int options, char *dir, int depth);
+int		ft_ls(int options, char *dir);
 t_list	*to_list(char *dir, int options, t_format *format);
 void	ft_lstadd_sort(t_list **alst, t_list *new, int (*cmp)(t_list*, t_list*));
 
@@ -81,5 +81,6 @@ int		not_dot_file(char *file);
 
 size_t	ft_numlen(unsigned long n);
 
+char	*ft_strfjoin(char const *s1, char const *s2);
 
 #endif
