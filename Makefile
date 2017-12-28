@@ -4,11 +4,10 @@ NAME = ft_ls
 SRC = main.c \
 		run.c \
 		parse.c \
-		ls.c \
+		ft_ls.c \
 		to_list.c \
 		tools.c \
 		print.c \
-		recursive_reverse_list.c \
 		compare.c \
 		handle_dotfiles.c
 
