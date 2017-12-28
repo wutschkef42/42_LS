@@ -5,11 +5,12 @@ SRC = main.c \
 		run.c \
 		parse.c \
 		ft_ls.c \
-		to_list.c \
+		list/to_list.c \
 		tools.c \
 		print.c \
-		compare.c \
-		handle_dotfiles.c
+		list/compare.c \
+		handle_dotfiles.c \
+		list/free_list.c
 
 SRCDIR = ./src
 OBJDIR = ./obj
@@ -28,6 +29,7 @@ all: obj $(FTLIB) $(NAME)
 
 obj:
 	mkdir -p $(OBJDIR)
+	mkdir -p $(OBJDIR)/list
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(FLAGS) $(FTINC) -I $(INCDIR) -o $@ -c $<

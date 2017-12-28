@@ -83,4 +83,6 @@ size_t	ft_numlen(unsigned long n);
 
 char	*ft_strfjoin(char const *s1, char const *s2);
 
+void	clear_list(t_list *files);
+
 #endif
