@@ -77,29 +77,22 @@ void	print_list(t_list *files, int options, t_format *format)
 {
 	t_ls *ls;
 
-	if (options & LO)
-		print_blocksize(files, options);
+	call_blocksize(options, files);
 	while (files)
 	{
 		ls = (t_ls*)(files->ct);
 		if (options & LO)
 		{
 			if ((options & AL) || not_dot_file(ls->file))
-			{
 				print_stat(ls, format);
-				if (files->next)
-					ft_printf("\n");
-			}
 		}
 		else
 		{
 			if ((options & AL) || not_dot_file(ls->file))
-			{
 				print_basic(ls->file);
-				if (files->next)
-					ft_printf("\n");
-			}
 		}
+		if (files->next && ((options & AL) || not_dot_file(ls->file)))
+			ft_printf("\n");
 		files = files->next;
 	}
 	ft_printf("\n");

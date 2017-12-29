@@ -73,5 +73,8 @@ int		nd(char *file);
 int		not_dot_file(char *file);
 size_t	ft_numlen(unsigned long n);
 char	*ft_strfjoin(char const *s1, char const *s2);
+void	call_blocksize(int options, t_list *files);
+int		print_blocksize(t_list *files, int options);
+
 
 #endif

@@ -37,3 +37,9 @@ char	*ft_strfjoin(char const *s1, char const *s2)
 	free((void*)s1);
 	return (str);
 }
+
+void	call_blocksize(int options, t_list *files)
+{
+	if (options & LO)
+		print_blocksize(files, options);
+}
