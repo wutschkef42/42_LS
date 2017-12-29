@@ -74,6 +74,7 @@ static void	*make_node(char *dir, char *file, t_format *format)
 	node->size = file_stat.st_size;
 	node->time = file_stat.st_mtimespec.tv_sec;
 	node->time_nsec = file_stat.st_mtimespec.tv_nsec;
+	node->bsize = file_stat.st_blocks;
 	update_format(node, format);
 	return ((void*)(node));
 }

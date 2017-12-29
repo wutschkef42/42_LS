@@ -50,6 +50,23 @@ int		print_stat(t_ls *ls, t_format *format)
 	return (0);
 }
 
+int		print_blocksize(t_list *files, int options)
+{
+	long	bsize;
+
+	bsize = 0;
+	while (files)
+	{
+		if (!not_dot_file(((t_ls*)(files->ct))->file) && (options & AL))
+			bsize += ((t_ls*)(files->ct))->bsize;
+		else if (not_dot_file(((t_ls*)(files->ct))->file))
+			bsize += ((t_ls*)(files->ct))->bsize;
+		files = files->next;
+	}
+	ft_printf("total %ld\n", bsize);
+	return (0);
+}
+
 int		print_basic(char *file)
 {
 	ft_printf("%s", file);
@@ -60,6 +77,8 @@ void	print_list(t_list *files, int options, t_format *format)
 {
 	t_ls *ls;
 
+	if (options & LO)
+		print_blocksize(files, options);
 	while (files)
 	{
 		ls = (t_ls*)(files->ct);

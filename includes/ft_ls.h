@@ -44,6 +44,7 @@ typedef struct	s_ls
 	off_t			size;
 	long			time;
 	long			time_nsec;
+	long			bsize;
 }				t_ls;
 
 typedef struct	s_format
