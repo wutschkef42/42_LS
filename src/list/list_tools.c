@@ -19,8 +19,6 @@ void		ft_lstadd_sort(t_list **alst, t_list *new,
 	t_list	*cur;
 	t_list	*prev;
 
-	if (!alst)
-		return ;
 	if (!(*alst))
 	{
 		*alst = new;
