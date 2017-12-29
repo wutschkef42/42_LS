@@ -6,7 +6,7 @@
 /*   By: wutschkef <felix.wutschke@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 12:41:51 by wutschkef         #+#    #+#             */
-/*   Updated: 2017/12/24 12:41:53 by wutschkef        ###   ########.fr       */
+/*   Updated: 2017/12/28 19:33:49 by wutschkef        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ static void	update_format(t_ls *node, t_format *format)
 		ft_numlen(node->size) : format->size_width;
 }
 
-static void	*make_node(char *dir, char *file, t_format	*format)
+static void	*make_node(char *dir, char *file, t_format *format)
 {
-	struct stat	fileStat;
+	struct stat	file_stat;
 	t_ls		*node;
 	int			i;
 	char		*tmp;
-	
+
 	tmp = ft_strfjoin(ft_strjoin(dir, "/"), file);
-	if (lstat(tmp, &fileStat) < 0)
+	if (lstat(tmp, &file_stat) < 0)
 		return (NULL);
 	if (!(node = malloc(sizeof(t_ls))))
 		return (NULL);
@@ -46,7 +46,7 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 	if (!(node->file = malloc(sizeof(char) * ft_strlen(file) + 1)))
 		return (NULL);
 	node->link_ref = NULL;
-	if (S_ISLNK(fileStat.st_mode))
+	if (S_ISLNK(file_stat.st_mode))
 	{
 		i = 1;
 		if (!(node->link_ref = ft_memalloc(sizeof(char) * LINK_REF_SIZE)))
@@ -58,7 +58,8 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 		{
 			i++;
 			free(node->link_ref);
-			if (!(node->link_ref = ft_memalloc(sizeof(char) * LINK_REF_SIZE * i)))
+			if (!(node->link_ref = ft_memalloc(sizeof(char) *
+				LINK_REF_SIZE * i)))
 				return (NULL);
 			tmp = ft_strfjoin(ft_strjoin(dir, "/"), file);
 			readlink(tmp, node->link_ref, LINK_REF_SIZE * i);
@@ -66,18 +67,18 @@ static void	*make_node(char *dir, char *file, t_format	*format)
 		}
 	}
 	ft_strcpy(node->file, file);
-	node->mode = fileStat.st_mode;
-	node->nlink = fileStat.st_nlink;
-	node->uid = fileStat.st_uid;
-	node->gid = fileStat.st_gid;
-	node->size = fileStat.st_size;
-	node->time = fileStat.st_mtimespec.tv_sec;
-	node->time_nsec = fileStat.st_mtimespec.tv_nsec;
+	node->mode = file_stat.st_mode;
+	node->nlink = file_stat.st_nlink;
+	node->uid = file_stat.st_uid;
+	node->gid = file_stat.st_gid;
+	node->size = file_stat.st_size;
+	node->time = file_stat.st_mtimespec.tv_sec;
+	node->time_nsec = file_stat.st_mtimespec.tv_nsec;
 	update_format(node, format);
 	return ((void*)(node));
 }
 
-int		is_dir(char *path)
+int			is_dir(char *path)
 {
 	struct stat stats;
 
@@ -86,8 +87,7 @@ int		is_dir(char *path)
 	return (S_ISDIR(stats.st_mode));
 }
 
-
-t_list	*to_list(char *dir, int options, t_format *format)
+t_list		*to_list(char *dir, int options, t_format *format)
 {
 	DIR				*dirp;
 	struct dirent	*dp;
@@ -100,21 +100,21 @@ t_list	*to_list(char *dir, int options, t_format *format)
 	{
 		perror("couldn't open.");
 		return (NULL);
-	}	
+	}
 	dp = readdir(dirp);
 	while (dp != NULL)
 	{
-		if (options & TM)	
+		if (options & TM)
 		{
 			if (!(tmp = make_node(dir, dp->d_name, format)))
-				return (NULL);		
+				return (NULL);
 			ft_lstadd_sort(&files, ft_lstnew(tmp, sizeof(t_ls)), &comp_tstamp);
 		}
- 		else
+		else
 		{
-			if (!(tmp = make_node(dir,dp->d_name, format)))
+			if (!(tmp = make_node(dir, dp->d_name, format)))
 				return (NULL);
-			ft_lstadd_sort(&files, ft_lstnew(tmp, sizeof(t_ls)), &comp_lex);	
+			ft_lstadd_sort(&files, ft_lstnew(tmp, sizeof(t_ls)), &comp_lex);
 		}
 		free(tmp);
 		dp = readdir(dirp);
@@ -126,4 +126,3 @@ t_list	*to_list(char *dir, int options, t_format *format)
 	closedir(dirp);
 	return (files);
 }
-

@@ -6,7 +6,7 @@
 /*   By: wutschkef <felix.wutschke@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/28 17:51:38 by wutschkef         #+#    #+#             */
-/*   Updated: 2017/12/28 17:52:27 by wutschkef        ###   ########.fr       */
+/*   Updated: 2017/12/28 19:07:41 by wutschkef        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 #include <grp.h>
 #include <time.h>
 
-static t_format	*init_format()
+static t_format	*init_format(void)
 {
 	t_format	*format;
 
@@ -57,7 +57,7 @@ int				ft_ls(int options, char *dir)
 	{
 		free(format);
 		return (-1);
-	}		
+	}
 	print_list(fls, options, format);
 	free(format);
 	tmp = fls;
@@ -68,9 +68,8 @@ int				ft_ls(int options, char *dir)
 			path = get_path(dir, fls);
 			ft_ls(options, path);
 			free(path);
-		}	
-		fls = fls->next;	
+		}
+		fls = fls->next;
 	}
-	clear_list(tmp);
-	return (0);
+	return (clear_list(tmp));
 }

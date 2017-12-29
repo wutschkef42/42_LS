@@ -6,13 +6,12 @@
 /*   By: wutschkef <felix.wutschke@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/23 16:39:28 by wutschkef         #+#    #+#             */
-/*   Updated: 2017/12/23 16:44:36 by wutschkef        ###   ########.fr       */
+/*   Updated: 2017/12/28 19:35:19 by wutschkef        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_ls.h"
-
 
 static int	is_option(char c)
 {
@@ -52,15 +51,14 @@ static int	parse_option(int *options, char *av)
 	return (1);
 }
 
-int		parse_options(int ac, char **av, int *pos)
+int			parse_options(int ac, char **av, int *pos)
 {
 	int		options;
-	
+
 	options = 0;
 	*pos = 0;
 	while (++(*pos) < ac && av[*pos][0] == '-' &&
 		ft_strlen(av[*pos]) > 1)
 		parse_option(&options, av[*pos]);
-
 	return (options);
 }

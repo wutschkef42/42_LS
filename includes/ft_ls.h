@@ -6,7 +6,7 @@
 /*   By: wutschkef <felix.wutschke@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/23 16:44:11 by wutschkef         #+#    #+#             */
-/*   Updated: 2017/12/23 16:51:59 by wutschkef        ###   ########.fr       */
+/*   Updated: 2017/12/28 19:08:40 by wutschkef        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		parse_options(int ac, char **av, int *pos);
 int		ft_ls(int options, char *dir);
 
 t_list	*to_list(char *dir, int options, t_format *format);
-void	clear_list(t_list *files);
+int		clear_list(t_list *files);
 void	ft_lstadd_sort(t_list **alst, t_list *new, int (*cmp)(t_list*, t_list*));
 int		comp_lex(t_list *a, t_list *b);
 int		comp_tstamp(t_list *a, t_list *b);
