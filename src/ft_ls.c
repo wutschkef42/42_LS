@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ls.c                                               :+:      :+:    :+:   */
+/*   ft_ls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wutschkef <felix.wutschke@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/23 21:36:22 by wutschkef         #+#    #+#             */
-/*   Updated: 2017/12/23 21:36:24 by wutschkef        ###   ########.fr       */
+/*   Created: 2017/12/28 17:51:38 by wutschkef         #+#    #+#             */
+/*   Updated: 2017/12/28 17:52:27 by wutschkef        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 #include <grp.h>
 #include <time.h>
 
-
-// replace init function by passing compound literal to to_list()
 static t_format	*init_format()
 {
 	t_format	*format;
@@ -38,38 +36,41 @@ static t_format	*init_format()
 	return (format);
 }
 
-
-int	ft_ls(int options, char *dir)
+static char		*get_path(char *dir, t_list *files)
 {
-	t_list		*files;
+	char	*path;
+
+	path = ft_strfjoin(ft_strjoin(dir, "/"), ((t_ls*)(files->ct))->file);
+	ft_printf("\n%s:\n", path);
+	return (path);
+}
+
+int				ft_ls(int options, char *dir)
+{
+	t_list		*fls;
 	t_list		*tmp;
 	t_format	*format;
-	char		*path, *path2;
+	char		*path;
 
 	format = init_format();
-	if (!(files = to_list(dir, options, format)))
+	if (!(fls = to_list(dir, options, format)))
 	{
 		free(format);
 		return (-1);
-	}
-		
-	print_list(files, options, format);
+	}		
+	print_list(fls, options, format);
 	free(format);
-	tmp = files;
-	while ((options & RC) && files)
+	tmp = fls;
+	while ((options & RC) && fls)
 	{
-		if (S_ISDIR(((t_ls*)(files->content))->mode) && (not_dot_dir(((t_ls*)(files->content))->file)))
+		if (S_ISDIR(((t_ls*)(fls->ct))->mode) && (nd(((t_ls*)(fls->ct))->file)))
 		{
-			path2 = ft_strjoin(dir, "/");
-			path = ft_strfjoin(path2, ((t_ls*)(files->content))->file);
-			ft_printf("\n%s:\n", path);
+			path = get_path(dir, fls);
 			ft_ls(options, path);
 			free(path);
 		}	
-		 files = files->next;	
+		fls = fls->next;	
 	}
 	clear_list(tmp);
 	return (0);
 }
-
-

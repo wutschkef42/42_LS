@@ -10,7 +10,7 @@ int	not_dot_file(char *file)
 	return (0);
 }
 
-int	not_dot_dir(char *file)
+int	nd(char *file)
 {
 	if (ft_strcmp(file, ".") != 0 && ft_strcmp(file, "..") != 0)
 		return (1);

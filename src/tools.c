@@ -11,8 +11,6 @@ size_t	ft_numlen(unsigned long n)
 	return (len);
 }
 
-
-
 char	*ft_strfjoin(char const *s1, char const *s2)
 {
 	char	*str;

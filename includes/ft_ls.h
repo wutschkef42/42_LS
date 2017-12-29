@@ -13,17 +13,16 @@
 #ifndef FT_LS_H
 # define FT_LS_H
 
-#include "libft.h"
-
-#include <stdio.h>
-
-
-#include <unistd.h>
+#include <errno.h>
+#include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <pwd.h>
 #include <grp.h>
 #include <time.h>
+#include <unistd.h>
+#include <stdio.h>
+#include "libft.h"
 
 # define NO 0
 # define RC 1
@@ -33,7 +32,6 @@
 # define TM 16
 
 # define LINK_REF_SIZE 100
-
 
 typedef struct	s_ls
 {
@@ -54,36 +52,25 @@ typedef struct	s_format
 	size_t	group_width;
 	size_t	nlink_width;
 	size_t	size_width;
-
-
 }				t_format;
 
 int		run(int ac, char **av);
 int		parse_options(int ac, char **av, int *pos);
 int		ft_ls(int options, char *dir);
+
 t_list	*to_list(char *dir, int options, t_format *format);
+void	clear_list(t_list *files);
 void	ft_lstadd_sort(t_list **alst, t_list *new, int (*cmp)(t_list*, t_list*));
-
-
-// print.c
+int		comp_lex(t_list *a, t_list *b);
+int		comp_tstamp(t_list *a, t_list *b);
+void	reverse_list(t_list **head);
 int		print_stat(t_ls *ls, t_format *format);
 int		print_basic(char *file);
 void	print_list(t_list *files, int options, t_format *format);
 void	print_format(t_format *format);
-
-void	reverse_list(t_list **head);
-void    reverse_list_rec(t_list **head);
-
-int		comp_lex(t_list *a, t_list *b);
-int		comp_tstamp(t_list *a, t_list *b);
-
-int		not_dot_dir(char *file);
+int		nd(char *file);
 int		not_dot_file(char *file);
-
 size_t	ft_numlen(unsigned long n);
-
 char	*ft_strfjoin(char const *s1, char const *s2);
-
-void	clear_list(t_list *files);
 
 #endif

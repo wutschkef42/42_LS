@@ -61,7 +61,7 @@ void	print_list(t_list *files, int options, t_format *format)
 
 	while (files)
 	{
-		ls = (t_ls*)(files->content);
+		ls = (t_ls*)(files->ct);
 
      	if (options & LO)
      	{
