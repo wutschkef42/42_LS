@@ -10,6 +10,7 @@ SRC = main.c \
 		print.c \
 		list/compare.c \
 		list/list_tools.c \
+		list/list_tools2.c \
 		handle_dotfiles.c
 
 SRCDIR = ./src

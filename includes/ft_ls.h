@@ -33,6 +33,9 @@
 
 # define LINK_REF_SIZE 100
 
+typedef int (*t_compare)(t_list*, t_list*);
+
+
 typedef struct	s_ls
 {
 	char			*file;
@@ -59,22 +62,26 @@ int		run(int ac, char **av);
 int		parse_options(int ac, char **av, int *pos);
 int		ft_ls(int options, char *dir);
 
-t_list	*to_list(char *dir, int options, t_format *format);
-int		clear_list(t_list *files);
-void	ft_lstadd_sort(t_list **alst, t_list *new, int (*cmp)(t_list*, t_list*));
-int		comp_lex(t_list *a, t_list *b);
-int		comp_tstamp(t_list *a, t_list *b);
-void	reverse_list(t_list **head);
-int		print_stat(t_ls *ls, t_format *format);
-int		print_basic(char *file);
-void	print_list(t_list *files, int options, t_format *format);
-void	print_format(t_format *format);
-int		nd(char *file);
-int		not_dot_file(char *file);
-size_t	ft_numlen(unsigned long n);
-char	*ft_strfjoin(char const *s1, char const *s2);
-void	call_blocksize(int options, t_list *files);
-int		print_blocksize(t_list *files, int options);
+t_list		*to_list(char *dir, int options, t_format *format);
+int			clear_list(t_list *files);
+void		ft_lstadd_sort(t_list **alst, t_list *new, int (*cmp)(t_list*, t_list*));
+int			comp_lex(t_list *a, t_list *b);
+int			comp_tstamp(t_list *a, t_list *b);
+void		reverse_list(t_list **head);
+int			print_stat(t_ls *ls, t_format *format);
+int			print_basic(char *file);
+void		print_list(t_list *files, int options, t_format *format);
+void		print_format(t_format *format);
+int			nd(char *file);
+int			not_dot_file(char *file);
+size_t		ft_numlen(unsigned long n);
+char		*ft_strfjoin(char const *s1, char const *s2);
+void		call_blocksize(int options, t_list *files);
+int			print_blocksize(t_list *files, int options);
+int			is_dir(char *path);
+t_compare	choose_sort(int options);
+
+
 
 
 #endif

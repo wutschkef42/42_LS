@@ -43,3 +43,12 @@ void	call_blocksize(int options, t_list *files)
 	if (options & LO)
 		print_blocksize(files, options);
 }
+
+int		is_dir(char *path)
+{
+	struct stat stats;
+
+	if (lstat(path, &stats) == -1)
+		return (0);
+	return (S_ISDIR(stats.st_mode));
+}

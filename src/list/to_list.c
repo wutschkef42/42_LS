@@ -13,7 +13,7 @@
 #include "libft.h"
 #include "ft_ls.h"
 
-static void	update_format(t_ls *node, t_format *format)
+static t_ls	*update_format(t_ls *node, t_format *format)
 {
 	char	*owner;
 	char	*group;
@@ -28,13 +28,37 @@ static void	update_format(t_ls *node, t_format *format)
 		ft_numlen(node->nlink) : format->nlink_width;
 	format->size_width = ft_numlen(node->size) > format->size_width ?
 		ft_numlen(node->size) : format->size_width;
+	return (node);
+}
+
+static void	handle_links(t_ls **node, char *dir, char *file)
+{
+	int		i;
+	char	*tmp;
+
+	i = 1;
+	if (!((*node)->link_ref = ft_memalloc(sizeof(char) * LINK_REF_SIZE)))
+		return ;
+	tmp = ft_strfjoin(ft_strjoin(dir, "/"), file);
+	readlink(tmp, (*node)->link_ref, LINK_REF_SIZE);
+	free(tmp);
+	while (((*node)->link_ref)[LINK_REF_SIZE * i] != 0)
+	{
+		i++;
+		free((*node)->link_ref);
+		if (!((*node)->link_ref = ft_memalloc(sizeof(char) *
+			LINK_REF_SIZE * i)))
+			return ;
+		tmp = ft_strfjoin(ft_strjoin(dir, "/"), file);
+		readlink(tmp, (*node)->link_ref, LINK_REF_SIZE * i);
+		free(tmp);
+	}
 }
 
 static void	*make_node(char *dir, char *file, t_format *format)
 {
 	struct stat	file_stat;
 	t_ls		*node;
-	int			i;
 	char		*tmp;
 
 	tmp = ft_strfjoin(ft_strjoin(dir, "/"), file);
@@ -47,25 +71,7 @@ static void	*make_node(char *dir, char *file, t_format *format)
 		return (NULL);
 	node->link_ref = NULL;
 	if (S_ISLNK(file_stat.st_mode))
-	{
-		i = 1;
-		if (!(node->link_ref = ft_memalloc(sizeof(char) * LINK_REF_SIZE)))
-			return (NULL);
-		tmp = ft_strfjoin(ft_strjoin(dir, "/"), file);
-		readlink(tmp, node->link_ref, LINK_REF_SIZE);
-		free(tmp);
-		while ((node->link_ref)[LINK_REF_SIZE * i] != 0)
-		{
-			i++;
-			free(node->link_ref);
-			if (!(node->link_ref = ft_memalloc(sizeof(char) *
-				LINK_REF_SIZE * i)))
-				return (NULL);
-			tmp = ft_strfjoin(ft_strjoin(dir, "/"), file);
-			readlink(tmp, node->link_ref, LINK_REF_SIZE * i);
-			free(tmp);
-		}
-	}
+		handle_links(&node, dir, file);
 	ft_strcpy(node->file, file);
 	node->mode = file_stat.st_mode;
 	node->nlink = file_stat.st_nlink;
@@ -75,17 +81,18 @@ static void	*make_node(char *dir, char *file, t_format *format)
 	node->time = file_stat.st_mtimespec.tv_sec;
 	node->time_nsec = file_stat.st_mtimespec.tv_nsec;
 	node->bsize = file_stat.st_blocks;
-	update_format(node, format);
-	return ((void*)(node));
+	return ((void*)(update_format(node, format)));
 }
 
-int			is_dir(char *path)
+int			opendir_error(struct dirent **dp, char *dir, DIR **dirp)
 {
-	struct stat stats;
-
-	if (lstat(path, &stats) == -1)
-		return (0);
-	return (S_ISDIR(stats.st_mode));
+	if (!(is_dir(dir)) || !(*dirp = opendir(dir)))
+	{
+		perror("couldn't open.");
+		return (1);
+	}
+	*dp = readdir(*dirp);
+	return (0);
 }
 
 t_list		*to_list(char *dir, int options, t_format *format)
@@ -95,28 +102,15 @@ t_list		*to_list(char *dir, int options, t_format *format)
 	t_list			*files;
 	void			*tmp;
 
-	(void)options;
 	files = NULL;
-	if (!(is_dir(dir)) || !(dirp = opendir(dir)))
-	{
-		perror("couldn't open.");
+	if (opendir_error(&dp, dir, &dirp))
 		return (NULL);
-	}
-	dp = readdir(dirp);
 	while (dp != NULL)
 	{
-		if (options & TM)
-		{
-			if (!(tmp = make_node(dir, dp->d_name, format)))
-				return (NULL);
-			ft_lstadd_sort(&files, ft_lstnew(tmp, sizeof(t_ls)), &comp_tstamp);
-		}
-		else
-		{
-			if (!(tmp = make_node(dir, dp->d_name, format)))
-				return (NULL);
-			ft_lstadd_sort(&files, ft_lstnew(tmp, sizeof(t_ls)), &comp_lex);
-		}
+		if (!(tmp = make_node(dir, dp->d_name, format)))
+			return (NULL);
+		ft_lstadd_sort(&files, ft_lstnew(tmp, sizeof(t_ls)),
+			choose_sort(options));
 		free(tmp);
 		dp = readdir(dirp);
 	}
